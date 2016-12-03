@@ -92,12 +92,12 @@ module.exports = {
       }
     ],
     loaders: [
-      // Process JS with Babel.
       {
         test: /\.(js|jsx)$/,
         include: paths.appSrc,
         loader: 'react-hot'
       },
+      // Process JS with Babel.
       {
         test: /\.(js|jsx)$/,
         include: paths.appSrc,

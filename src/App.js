@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router';
 import logo from './logo.svg'
 import './App.scss'
 
@@ -39,6 +40,12 @@ class App extends Component {
         <button onClick={this.props.decrementCounter}>Decrement</button>
         <button onClick={this.props.addFiveToCounter}>Add 5</button>
         <button onClick={this.props.subtractFiveFromCounter}>Subtract 5</button>
+        <div>
+          <Link to="/" activeClassName="active" onlyActiveOnIndex>Home</Link>
+          |
+          <Link to="/things" activeClassName="active">Go to Things</Link>
+        </div>
+        {this.props.children}
       </div>
     )
   }
