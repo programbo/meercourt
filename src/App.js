@@ -1,13 +1,18 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router';
+import { firebaseConnect, helpers } from 'react-redux-firebase'
 import logo from './logo.svg'
 import './App.scss'
 
 import { incrementCounter, decrementCounter } from './redux/actions'
+const { pathToJS } = helpers
 
-const mapStateToProps = ({ counter }) => ({
-  counter
+const mapStateToProps = ({ counter, firebase }) => ({
+  counter,
+  authError: pathToJS(firebase, 'authError'),
+  auth: pathToJS(firebase, 'auth'),
+  profile: pathToJS(firebase, 'profile')
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -25,8 +30,11 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   }
 })
 
-class App extends Component {
+@firebaseConnect()
+@connect(mapStateToProps, mapDispatchToProps)
+export default class App extends Component {
   render() {
+    console.log('this.props.firebase', this.props.firebase); // eslint-disable-line no-console
     return (
       <div className="App">
         <div className="App-header">
@@ -34,7 +42,7 @@ class App extends Component {
           <h2>Welcome to Countertown: {this.props.counter}</h2>
         </div>
         <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
+          To get started, edit <code>src/App.js</code> and save to reload :(
         </p>
         <button onClick={this.props.incrementCounter}>Increment</button>
         <button onClick={this.props.decrementCounter}>Decrement</button>
@@ -43,12 +51,10 @@ class App extends Component {
         <div>
           <Link to="/" activeClassName="active" onlyActiveOnIndex>Home</Link>
           |
-          <Link to="/things" activeClassName="active">Go to Things</Link>
+          <Link to="/court/coffee-beans" activeClassName="active">Coffee Beans`</Link>
         </div>
         {this.props.children}
       </div>
     )
   }
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(App)
