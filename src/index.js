@@ -12,18 +12,25 @@ import App from './App'
 import { Home, Court, Case } from './components/pages';
 import './index.css'
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAGuOe9KOA0qR4hrQOW_nazoo6y-GfKCs8",
-  authDomain: "meercourt-d8ac7.firebaseapp.com",
-  databaseURL: "https://meercourt-d8ac7.firebaseio.com",
-  storageBucket: "meercourt-d8ac7.appspot.com",
-  messagingSenderId: "153305987866"
+const firebase = {
+  config: {
+    apiKey: 'AIzaSyAGuOe9KOA0qR4hrQOW_nazoo6y-GfKCs8',
+    authDomain: 'meercourt-d8ac7.firebaseapp.com',
+    databaseURL: 'https://meercourt-d8ac7.firebaseio.com',
+    storageBucket: 'meercourt-d8ac7.appspot.com',
+    messagingSenderId: '153305987866'
+  },
+  settings: {
+    userProfile: 'users',
+    enableLogging: false,
+    updateProfileOnLogin: true
+  }
 }
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const createStoreWithMiddleware = composeEnhancers(
   applyMiddleware(thunk.withExtraArgument(getFirebase)),
-  reactReduxFirebase(firebaseConfig, { userProfile: 'users' })
+  reactReduxFirebase(firebase.config, firebase.settings)
 )(createStore)
 const store = createStoreWithMiddleware(reducers)
 const history = syncHistoryWithStore(browserHistory, store);
