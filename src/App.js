@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { firebaseConnect, helpers } from 'react-redux-firebase'
 import logo from './logo.svg'
 import './App.scss'
-import Login from './components/Login';
+import LoginForm from './components/auth/LoginForm';
 
 import { incrementCounter, decrementCounter } from './redux/actions'
 const { pathToJS } = helpers
@@ -54,7 +54,7 @@ export default class App extends Component {
           |
           <Link to="/court/coffee-beans" activeClassName="active">Coffee Beans`</Link>
         </div>
-        <Login/>
+        <LoginForm/>
         {this.props.children}
       </div>
     )

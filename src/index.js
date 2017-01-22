@@ -10,7 +10,9 @@ import reducers from './redux/reducers'
 
 import App from './App'
 import { Home, Court, Case } from './components/pages';
-import './index.css'
+import './style/index.scss'
+import 'react-mdl/extra/material.css';
+import 'react-mdl/extra/material.js';
 
 const firebase = {
   config: {

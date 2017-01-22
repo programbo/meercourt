@@ -2,12 +2,15 @@ var path = require('path');
 var autoprefixer = require('autoprefixer');
 var webpack = require('webpack');
 var findCacheDir = require('find-cache-dir');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 var InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 var WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 var getClientEnvironment = require('./env');
 var paths = require('./paths');
+
+var ENV = process.env.NODE_ENV || 'development';
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -73,7 +76,7 @@ module.exports = {
     // We also include JSX as a common component filename extension to support
     // some tools, although we do not recommend using it, see:
     // https://github.com/facebookincubator/create-react-app/issues/290
-    extensions: ['.js', '.json', '.jsx', ''],
+    extensions: ['.js', '.json', '.jsx', '.scss', ''],
     alias: {
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
@@ -113,25 +116,34 @@ module.exports = {
           })
         }
       },
-      // "postcss" loader applies autoprefixer to our CSS.
-      // "css" loader resolves paths in CSS and adds assets as dependencies.
-      // "style" loader turns CSS into JS modules that inject <style> tags.
-      // In production, we use a plugin to extract that CSS to a file, but
-      // in development "style" loader enables hot editing of CSS.
       {
-        test: /\.css$/,
-        loader: 'style!css?importLoaders=1!postcss'
+        // Transform our own .(scss|css) files with PostCSS and CSS-modules
+        test: /\.(scss|css)$/,
+        include: [path.join(paths.appSrc, 'components')],
+        loader: ExtractTextPlugin.extract('style?singleton', [
+          `css?sourceMap&modules&localIdentName=[local]__[hash:base64:5]&importLoaders=1`,
+          'postcss',
+          `sass?sourceMap`
+        ].join('!'))
       },
       {
-        test: /\.scss$/,
-        include: paths.appSrc,
-        loaders: ["style", "css?importLoaders=1&sourceMap", "sass?sourceMap", "postcss"]
+        test: /\.(scss|css)$/,
+        exclude: [path.join(paths.appSrc, 'components')],
+        loader: ExtractTextPlugin.extract('style?singleton', [
+          `css?sourceMap`,
+          `postcss`,
+          `sass?sourceMap`
+        ].join('!'))
       },
       // JSON is not enabled by default in Webpack but both Node and Browserify
       // allow it implicitly so we also enable it.
       {
         test: /\.json$/,
         loader: 'json'
+      },
+      {
+        test: /\.(xml|html|txt|md)$/,
+        loader: 'raw'
       },
       // "file" loader makes sure those assets get served by WebpackDevServer.
       // When you `import` an asset, you get its (virtual) filename.
@@ -170,6 +182,10 @@ module.exports = {
     ];
   },
   plugins: [
+    new ExtractTextPlugin('style.css', {
+      allChunks: true,
+      disable: ENV!=='production'
+    }),
     // Makes the public URL available as %PUBLIC_URL% in index.html, e.g.:
     // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
     // In development, this will be an empty string.
