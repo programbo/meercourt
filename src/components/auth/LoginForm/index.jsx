@@ -1,14 +1,14 @@
 import React from 'react'
 import { Button, Card, CardText, CardActions, CardTitle, Textfield } from 'react-mdl'
 import style from './style'
-console.log('style', style); // eslint-disable-line no-console
+
 const handleSubmit = (e) => {
   e.preventDefault();
   console.log('Submit form', e); // eslint-disable-line no-console
 }
 
 const LoginForm = () => (
-  <div className="style">
+  <div className="login-form">
     <Card shadow={0} style={{margin: 'auto'}}>
       <CardTitle>Login</CardTitle>
       <form className={style.test} action="#" onSubmit={handleSubmit}>

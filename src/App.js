@@ -31,7 +31,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   }
 })
 
-@firebaseConnect()
+@firebaseConnect(['/courts'])
 @connect(mapStateToProps, mapDispatchToProps)
 export default class App extends Component {
   render() {
