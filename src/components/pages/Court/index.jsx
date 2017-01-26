@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import CaseSummary from '../CaseSummary';
+import CaseSummary from '../../CaseSummary';
 
 class Court extends Component {
   render() {

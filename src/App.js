@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
 import { firebaseConnect, helpers } from 'react-redux-firebase'
-import logo from './logo.svg'
-import './App.scss'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import AppBar from 'material-ui/AppBar';
+import FlatButton from 'material-ui/FlatButton';
 import LoginForm from './components/auth/LoginForm';
 
 import { incrementCounter, decrementCounter } from './redux/actions'
@@ -35,28 +36,35 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 @connect(mapStateToProps, mapDispatchToProps)
 export default class App extends Component {
   render() {
-    console.log('this.props.firebase', this.props.firebase); // eslint-disable-line no-console
+    console.log('this.props.profile', this.props.profile); // eslint-disable-line no-console
+    console.log('this.props.auth', this.props.auth); // eslint-disable-line no-console
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to Countertown: {this.props.counter}</h2>
+      <MuiThemeProvider>
+        <div className="App">
+          <AppBar
+            title="Mob Justice"
+            iconElementRight={<FlatButton label="Sign out" />}
+          />
+          {/* <div className="App-header">
+            <img src={logo} className="App-logo" alt="logo" />
+            <h2>Welcome to Countertown: {this.props.counter}</h2>
+          </div>
+          <p className="App-intro">
+            To get started, edit <code>src/App.js</code> and save to reload :(
+          </p>
+          <button onClick={this.props.incrementCounter}>Increment</button>
+          <button onClick={this.props.decrementCounter}>Decrement</button>
+          <button onClick={this.props.addFiveToCounter}>Add 5</button>
+          <button onClick={this.props.subtractFiveFromCounter}>Subtract 5</button>
+          <div>
+            <Link to="/" activeClassName="active" onlyActiveOnIndex>Home</Link>
+            |
+            <Link to="/court/coffee-beans" activeClassName="active">Coffee Beans`</Link>
+          </div> */}
+          <LoginForm/>
+          {this.props.children}
         </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload :(
-        </p>
-        <button onClick={this.props.incrementCounter}>Increment</button>
-        <button onClick={this.props.decrementCounter}>Decrement</button>
-        <button onClick={this.props.addFiveToCounter}>Add 5</button>
-        <button onClick={this.props.subtractFiveFromCounter}>Subtract 5</button>
-        <div>
-          <Link to="/" activeClassName="active" onlyActiveOnIndex>Home</Link>
-          |
-          <Link to="/court/coffee-beans" activeClassName="active">Coffee Beans`</Link>
-        </div>
-        <LoginForm/>
-        {this.props.children}
-      </div>
+      </MuiThemeProvider>
     )
   }
 }

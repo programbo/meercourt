@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import CourtSummary from '../CourtSummary';
+import CourtSummary from '../../CourtSummary';
 import { firebaseConnect, helpers } from 'react-redux-firebase'
+import CircularProgress from 'material-ui/CircularProgress';
 const { dataToJS, isLoaded, isEmpty } = helpers
 
 @firebaseConnect( [
@@ -16,7 +17,7 @@ export default class Home extends Component {
   render() {
     const { courts, firebase } = this.props;
     const courtsList = !isLoaded(courts)
-      ? 'Loading courts'
+      ? <CircularProgress/>
       : isEmpty(courts)
         ? 'Courts list is empty'
         : Object.keys(courts).map((key, id) => {
